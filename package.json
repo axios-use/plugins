@@ -1,0 +1,28 @@
+{
+  "name": "@axios-use/plugins",
+  "version": "1.0.0",
+  "description": "Plugins for Axios",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write '**/*' --config ./.prettierrc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/axios-use/plugins.git"
+  },
+  "keywords": [
+    "axios",
+    "plugins",
+    "interceptor"
+  ],
+  "author": "wangcch <wangcch.cc@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/axios-use/plugins/issues"
+  },
+  "homepage": "https://github.com/axios-use/plugins#readme",
+  "devDependencies": {
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.3"
+  }
+}
