@@ -6,29 +6,21 @@ import type {
   AxiosInterceptorRejectedFuncType,
 } from "./type";
 
-export type RetryRequestConfig = {
-  /** number of retries */
-  retry?: number | null;
-  /**
-   * millisecond of retry delay
-   * @default 1000
-   */
-  retryDelay?: number;
+export type _RetryRequestConfig<K1 extends string, K2 extends string> = {
+  [k in K1 | K2]?: number | null;
 };
 
-export type _RetryAxiosRequestConfig<D = any> = AxiosRequestConfig<D> &
-  RetryRequestConfig;
-
-export const onRetryInterceptorRejected: AxiosInterceptorRejectedFuncType = (
-  error,
-) => {
+export const _getOnRejected: <K1 extends string, K2 extends string>(
+  keys: [K1, K2],
+) => AxiosInterceptorRejectedFuncType = (keys) => (error) => {
   if (!error) {
     return;
   }
 
+  const [k1, k2] = keys;
   const { code, config: _config, message } = error as AxiosError;
-  const config = _config as _RetryAxiosRequestConfig;
-  if (!config || !config.retry) {
+  const config = _config as any;
+  if (!config || !config[k1] || !(config[k1] && config[k1] > 0)) {
     return Promise.reject(error);
   }
 
@@ -42,14 +34,25 @@ export const onRetryInterceptorRejected: AxiosInterceptorRejectedFuncType = (
     return Promise.reject(error);
   }
 
-  config.retry -= 1;
+  config[k1] -= 1;
   const delayRetryRequest = new Promise((resolve) => {
     setTimeout(() => {
       resolve(null);
-    }, config.retryDelay || 1000);
+    }, config[k2] || 1000);
   });
   return delayRetryRequest.then(() => axios(config));
 };
+
+/**
+ * @retry number of retries
+ * @retryDelay millisecond of retry delay
+ */
+export type RetryRequestConfig = _RetryRequestConfig<"retry", "retryDelay">;
+
+export const onRetryInterceptorRejected = _getOnRejected([
+  "retry",
+  "retryDelay",
+]);
 
 const _arr = [
   null,
