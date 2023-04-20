@@ -4,6 +4,12 @@
 
 Plugins for Axios
 
+## Install
+
+```bash
+npm i @axios-use/plugins
+```
+
 ## Interceptors
 
 ### Retry
