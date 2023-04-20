@@ -1,5 +1,7 @@
 # @axios-use/plugins
 
+[![](https://img.shields.io/npm/v/@axios-use/plugins.svg)](https://www.npmjs.com/package/@axios-use/plugins)
+
 Plugins for Axios
 
 ## Interceptors
